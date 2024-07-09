@@ -1,3 +1,5 @@
+#ansible-playbook -i inventory app_install.yaml
+
 ---
 
 - hosts: all
@@ -7,7 +9,9 @@
       yum:
         name: "{{ item }}"
         state: present
+      # with_items:
+      #   - vim
+      #   - sqlite
+      #   - jq
       with_items:
-        - vim
-        - sqlite
-        - jq
+        - "{{ app_list }}"
