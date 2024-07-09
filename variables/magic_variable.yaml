@@ -1,0 +1,65 @@
+---
+- name: Demonstrate magic variables in Ansible
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Display inventory hostname
+      debug:
+        msg: "Inventory hostname: {{ inventory_hostname }}"
+
+    - name: Display short inventory hostname
+      debug:
+        msg: "Short inventory hostname: {{ inventory_hostname_short }}"
+
+    - name: Display playbook directory
+      debug:
+        msg: "Playbook directory: {{ playbook_dir }}"
+
+    - name: Display ansible playbook directory
+      debug:
+        msg: "Ansible playbook directory: {{ ansible_playbook_dir }}"
+
+    - name: Display role names applied to this play
+      debug:
+        msg: "Roles applied to this play: {{ ansible_role_names }}"
+
+    - name: Display current role path
+      debug:
+        msg: "Current role path: {{ role_path if role_path is defined else 'N/A' }}"
+
+    - name: Display all groups the current host is part of
+      debug:
+        msg: "Groups this host is part of: {{ group_names }}"
+
+    - name: Display all hosts in 'all' group
+      debug:
+        msg: "All hosts in 'all' group: {{ groups['all'] }}"
+
+    - name: Display all hosts in 'webservers' group if exists
+      debug:
+        msg: "All hosts in 'webservers' group: {{ groups['webservers'] | default([]) }}"
+
+    - name: Access a variable from another host in the inventory
+      debug:
+        msg: "Variable from another host: {{ hostvars[groups['all'][0]].ansible_default_ipv4.address }}"
+
+    - name: Display ansible facts for the current host
+      debug:
+        var: ansible_facts
+
+    - name: Display all group variables for 'webservers' if it exists
+      debug:
+        msg: "Group vars for 'webservers': {{ hostvars[inventory_hostname]['group_names'] if 'webservers' in group_names else 'N/A' }}"
+
+    - name: Display all host variables for the current host
+      debug:
+        var: hostvars[inventory_hostname]
+
+    - name: Display ansible_connection value for the current host
+      debug:
+        msg: "Ansible connection: {{ ansible_connection }}"
+
+    - name: Display inventory hostname in different groups
+      debug:
+        msg: "{{ inventory_hostname }} is in groups: {{ group_names }}"
