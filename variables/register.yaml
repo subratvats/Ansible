@@ -1,0 +1,18 @@
+---
+- name: Example of using output variable from one task in another
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Run a command and register its output
+      command: echo "Hello, World!"
+      register: echo_output
+
+    - name: Display the output from the previous task
+      debug:
+        msg: "The output of the command was: {{ echo_output.stdout }}"
+
+    - name: Use the output in a file
+      copy:
+        content: "Output of command: {{ echo_output.stdout }}"
+        dest: /tmp/output.txt
