@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install applications
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vim
+        - sqlite
+        - jq
